@@ -1,0 +1,38 @@
+name: Node.js Docker CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Build Docker image
+      - name: Build Docker image
+        run: docker build -t hello-node .
+
+      # Step 5: Run Docker container
+      - name: Run Docker container
+        run: docker run -d -p 3000:3000 hello-node
+
+      # Step 6: Test if container is running (optional)
+      - name: Check running containers
+        run: docker ps
