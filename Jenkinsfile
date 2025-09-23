@@ -6,6 +6,7 @@ pipeline {
         DOCKER_IMAGE = 'hello-node:latest'
         CONTAINER_PORT = '3000'
         HOST_PORT = '3000'
+    }
 
     stages {
         stage('Checkout Code') {
@@ -28,15 +29,15 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-              bat '''
-        docker image inspect %DOCKER_IMAGE% >nul 2>&1
-        if errorlevel 1 (
-            echo Image not found, building...
-            docker build -t %DOCKER_IMAGE% "."
-        ) else (
-            echo Image %DOCKER_IMAGE% already exists, skipping build.
-        )
-        '''
+                bat '''
+                docker image inspect %DOCKER_IMAGE% >nul 2>&1
+                if errorlevel 1 (
+                    echo Image not found, building...
+                    docker build -t %DOCKER_IMAGE% "."
+                ) else (
+                    echo Image %DOCKER_IMAGE% already exists, skipping build.
+                )
+                '''
             }
         }
 
