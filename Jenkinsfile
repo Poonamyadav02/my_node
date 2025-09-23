@@ -44,17 +44,8 @@ pipeline {
 
         stage('Deploy App') {
             steps {
-                // Stop and remove existing container if exists
-                bat """
-                for /F "tokens=*" %%i in ('docker ps -q -f "name=%APP_NAME%"') do (
-                    echo Stopping container %%i
-                    docker stop %%i
-                    echo Removing container %%i
-                    docker rm %%i
-                )
-                """
-                // Run container in background
-                bat "start /B docker run --name %APP_NAME% -p %HOST_PORT%:%CONTAINER_PORT% %DOCKER_IMAGE%"
+                // Call the external batch script
+                bat 'deploy.bat'
             }
         }
     }
