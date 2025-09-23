@@ -17,31 +17,33 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                bat 'npm install'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'echo "No tests configured"'
+                bat 'echo No tests configured'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t ${DOCKER_IMAGE} ."
+                bat "docker build -t %DOCKER_IMAGE% ."
             }
         }
 
         stage('Deploy App') {
             steps {
-                sh '''
-                if [ "$(docker ps -q -f name=${APP_NAME})" ]; then
-                    docker stop ${APP_NAME}
-                    docker rm ${APP_NAME}
-                fi
-                '''
-                sh "docker run -d --name ${APP_NAME} -p ${HOST_PORT}:${CONTAINER_PORT} ${DOCKER_IMAGE}"
+                // Stop and remove existing container if exists
+                bat """
+                for /F "tokens=*" %%i in ('docker ps -q -f name=%APP_NAME%') do (
+                    docker stop %%i
+                    docker rm %%i
+                )
+                """
+                // Run container in background (Windows)
+                bat "start /B docker run --name %APP_NAME% -p %HOST_PORT%:%CONTAINER_PORT% %DOCKER_IMAGE%"
             }
         }
     }
