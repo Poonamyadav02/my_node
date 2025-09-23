@@ -42,10 +42,10 @@ pipeline {
         }
 
         stage('Deploy App') {
-            steps {
+             steps {
                 // Stop and remove existing container if exists
                 bat """
-                for /F "tokens=*" %%i in ('docker ps -q -f name=%APP_NAME%') do (
+                for /F "tokens=*" %%i in ('docker ps -q -f "name=%APP_NAME%"') do (
                     docker stop %%i
                     docker rm %%i
                 )
