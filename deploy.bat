@@ -8,4 +8,4 @@ for /F "tokens=*" %%i in ('docker ps -q -f "name=hello-node"') do (
 )
 
 REM Run the container in background
-docker run --name hello-node -p 3000:3000 hello-node:latest
+docker run --name hello-node -p 3001:3001 hello-node:latest

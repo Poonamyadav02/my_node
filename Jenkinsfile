@@ -4,8 +4,8 @@ pipeline {
     environment {
         APP_NAME = 'hello-node'
         DOCKER_IMAGE = 'hello-node:latest'
-        CONTAINER_PORT = '3000'
-        HOST_PORT = '3000'
+        CONTAINER_PORT = '3001'
+        HOST_PORT = '3001'
     }
 
     stages {
